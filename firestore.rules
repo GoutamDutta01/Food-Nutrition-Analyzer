@@ -1,0 +1,101 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default-deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // User profile validation
+    function isValidUserProfile(data) {
+      return data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
+             data.email is string && data.email.size() > 0 && data.email.size() <= 120 &&
+             data.calorieTarget is number && data.calorieTarget >= 500 && data.calorieTarget <= 10000 &&
+             data.proteinTarget is number && data.proteinTarget >= 0 && data.proteinTarget <= 1000 &&
+             data.carbTarget is number && data.carbTarget >= 0 && data.carbTarget <= 2000 &&
+             data.fatTarget is number && data.fatTarget >= 0 && data.fatTarget <= 1000;
+    }
+
+    // Meal item validation
+    function isValidMeal(data, userId) {
+      return data.userId == userId &&
+             data.name is string && data.name.size() > 0 && data.name.size() <= 120 &&
+             data.mealType in ['breakfast', 'lunch', 'snacks', 'dinner'] &&
+             data.calories is number && data.calories >= 0 && data.calories <= 10000 &&
+             data.protein is number && data.protein >= 0 &&
+             data.carbs is number && data.carbs >= 0 &&
+             data.fat is number && data.fat >= 0;
+    }
+
+    // Favorite validation
+    function isValidFavorite(data, userId) {
+      return data.userId == userId &&
+             data.name is string && data.name.size() > 0 && data.name.size() <= 120 &&
+             data.calories is number && data.calories >= 0;
+    }
+
+    // Chat message validation
+    function isValidMessage(data, userId) {
+      return data.userId == userId &&
+             data.role in ['user', 'assistant'] &&
+             data.content is string && data.content.size() > 0 && data.content.size() <= 4000;
+    }
+
+    // Connection test document
+    match /test/{docId} {
+      allow read: if true;
+    }
+
+    // User data hierarchy
+    match /users/{userId} {
+      allow get, write: if isOwner(userId) && isValidId(userId);
+
+      // Profile doc
+      match /profile/{docId} {
+        allow get: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidUserProfile(request.resource.data);
+        allow delete: if isOwner(userId);
+      }
+
+      // Meals subcollection
+      match /meals/{mealId} {
+        allow get, list: if isOwner(userId);
+        allow create: if isOwner(userId) && isValidMeal(request.resource.data, userId);
+        allow update: if isOwner(userId) && isValidMeal(request.resource.data, userId);
+        allow delete: if isOwner(userId);
+      }
+
+      // Favorites subcollection
+      match /favorites/{foodId} {
+        allow get, list: if isOwner(userId);
+        allow create, update: if isOwner(userId) && isValidFavorite(request.resource.data, userId);
+        allow delete: if isOwner(userId);
+      }
+
+      // Chat history subcollection
+      match /chatHistory/{conversationId}/messages/{messageId} {
+        allow get, list: if isOwner(userId);
+        allow create: if isOwner(userId) && isValidMessage(request.resource.data, userId);
+        allow update: if isOwner(userId) && isValidMessage(request.resource.data, userId);
+        allow delete: if isOwner(userId);
+      }
+
+      // Goals subcollection (if stored directly)
+      match /goals/{goalId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "entities": {
+    "userProfile": {
+      "title": "UserProfile",
+      "description": "User profile with personal metrics and nutritional targets",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "maxLength": 120 },
+        "age": { "type": "number" },
+        "gender": { "type": "string", "maxLength": 30 },
+        "height": { "type": "number" },
+        "weight": { "type": "number" },
+        "activityLevel": { "type": "string", "maxLength": 50 },
+        "goal": { "type": "string", "maxLength": 60 },
+        "calorieTarget": { "type": "number" },
+        "proteinTarget": { "type": "number" },
+        "carbTarget": { "type": "number" },
+        "fatTarget": { "type": "number" },
+        "fiberTarget": { "type": "number" },
+        "updatedAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["name", "email", "calorieTarget", "proteinTarget", "carbTarget", "fatTarget"]
+    },
+    "mealItem": {
+      "title": "MealItem",
+      "description": "Logged food item belonging to a specific meal window",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "foodId": { "type": "string", "maxLength": 64 },
+        "name": { "type": "string", "maxLength": 120 },
+        "mealType": { "type": "string", "enum": ["breakfast", "lunch", "snacks", "dinner"] },
+        "serving": { "type": "string", "maxLength": 60 },
+        "quantity": { "type": "number" },
+        "calories": { "type": "number" },
+        "protein": { "type": "number" },
+        "carbs": { "type": "number" },
+        "fat": { "type": "number" },
+        "fiber": { "type": "number" },
+        "sodium": { "type": "number" },
+        "date": { "type": "string", "maxLength": 20 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["name", "mealType", "calories", "protein", "carbs", "fat", "date", "userId"]
+    },
+    "favoriteItem": {
+      "title": "FavoriteItem",
+      "description": "Saved favorite food item for fast meal logging and analysis",
+      "type": "object",
+      "properties": {
+        "foodId": { "type": "string", "maxLength": 64 },
+        "name": { "type": "string", "maxLength": 120 },
+        "serving": { "type": "string", "maxLength": 60 },
+        "calories": { "type": "number" },
+        "protein": { "type": "number" },
+        "carbs": { "type": "number" },
+        "fat": { "type": "number" },
+        "userId": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["foodId", "name", "calories", "protein", "userId"]
+    },
+    "chatMessage": {
+      "title": "ChatMessage",
+      "description": "Text message in the NutriScan nutrition companion conversation",
+      "type": "object",
+      "properties": {
+        "role": { "type": "string", "enum": ["user", "assistant"] },
+        "content": { "type": "string", "maxLength": 4000 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "timestamp": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["role", "content", "userId"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}/profile/info": {
+      "schema": "userProfile",
+      "description": "User profile and estimated dietary goals"
+    },
+    "/users/{userId}/meals/{mealId}": {
+      "schema": "mealItem",
+      "description": "User logged meals synchronized across devices"
+    },
+    "/users/{userId}/favorites/{foodId}": {
+      "schema": "favoriteItem",
+      "description": "User favorite food recipes and products"
+    },
+    "/users/{userId}/chatHistory/{conversationId}/messages/{messageId}": {
+      "schema": "chatMessage",
+      "description": "User nutrition conversation transcripts and coaching history"
+    }
+  }
+}

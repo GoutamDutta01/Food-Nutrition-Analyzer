@@ -1,0 +1,1586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/>
+  <title>NutriScan Food & Nutrition Analyzer</title>
+  <meta name="description" content="Clinical-grade nutritional analytics, real-time macro calculation, and AI nutrition companion." />
+  <meta property="og:title" content="NutriScan Food & Nutrition Analyzer" />
+  <meta property="og:description" content="Clinical-grade nutritional analytics, real-time macro calculation, and AI nutrition companion." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Google Fonts: Plus Jakarta Sans, Inter & Material Symbols -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-container-highest": "#e0e3dd",
+            "tertiary": "#006342",
+            "primary-container": "#2e7d32",
+            "tertiary-fixed": "#6ffbbe",
+            "on-background": "#191d19",
+            "inverse-surface": "#2d312d",
+            "on-error-container": "#93000a",
+            "surface-container": "#ecefe8",
+            "on-primary": "#ffffff",
+            "surface-tint": "#1b6d24",
+            "surface-variant": "#e0e3dd",
+            "on-tertiary": "#ffffff",
+            "secondary-container": "#ff8f06",
+            "on-tertiary-fixed": "#002113",
+            "on-secondary-container": "#623300",
+            "inverse-primary": "#88d982",
+            "surface-bright": "#f7faf3",
+            "surface-container-lowest": "#ffffff",
+            "outline-variant": "#bfcaba",
+            "on-tertiary-container": "#c5ffde",
+            "surface-container-low": "#f2f5ee",
+            "secondary-fixed": "#ffdcc2",
+            "primary": "#0d631b",
+            "on-surface-variant": "#40493d",
+            "primary-fixed-dim": "#88d982",
+            "on-primary-fixed-variant": "#005312",
+            "on-secondary-fixed": "#2e1500",
+            "secondary-fixed-dim": "#ffb77b",
+            "on-tertiary-fixed-variant": "#005236",
+            "on-primary-fixed": "#002204",
+            "on-primary-container": "#cbffc2",
+            "error-container": "#ffdad6",
+            "surface-dim": "#d8dbd4",
+            "error": "#ba1a1a",
+            "surface": "#f7faf3",
+            "tertiary-container": "#007e56",
+            "background": "#f7faf3",
+            "on-surface": "#191d19",
+            "secondary": "#8f4e00",
+            "primary-fixed": "#a3f69c",
+            "on-secondary": "#ffffff",
+            "surface-container-high": "#e6e9e2",
+            "outline": "#707a6c",
+            "on-error": "#ffffff",
+            "inverse-on-surface": "#eff2eb",
+            "tertiary-fixed-dim": "#4edea3",
+            "on-secondary-fixed-variant": "#6d3a00"
+          },
+          fontFamily: {
+            "headline": ["Plus Jakarta Sans", "sans-serif"],
+            "body": ["Inter", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    @layer base {
+      html, body {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        background-color: #f7faf3;
+        font-family: 'Inter', sans-serif;
+      }
+      body {
+        overscroll-behavior: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .font-headline {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+      }
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface antialiased flex flex-col min-h-screen relative selection:bg-primary-fixed selection:text-on-primary-fixed">
+
+  <!-- ================= TOP HEADER (Desktop & Mobile) ================= -->
+  <header class="fixed top-0 inset-x-0 z-40 bg-surface/90 backdrop-blur-xl border-b border-outline-variant/30 shadow-xs">
+    <div class="max-w-7xl mx-auto h-16 px-4 flex items-center justify-between gap-4">
+      
+      <!-- Brand & Mobile Hamburger -->
+      <div class="flex items-center gap-3">
+        <button aria-label="Open Menu" class="md:hidden w-10 h-10 flex items-center justify-center rounded-xl text-on-surface hover:bg-surface-container active:scale-95 transition-all" onclick="document.getElementById('mobile-drawer').classList.remove('-translate-x-full');document.getElementById('drawer-backdrop').classList.remove('opacity-0','pointer-events-none');">
+          <span class="material-symbols-outlined text-[24px]">menu</span>
+        </button>
+        <div class="flex items-center gap-2 cursor-pointer" onclick="navigateTo('dashboard')">
+          <img alt="NutriScan Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1UH6ZKnVb7tFll70FMb9C9Nw0u8dVCfMpIO2dDiXAULVwGLF3UtkW0sUI-jqWKgdvopbeW3jDC9scHCgmMVs1UE5HXXOgSmAMJ5LoslazEpbRbyr4IbYcHKX6k3XMnKNxVG3HoZGW5IVPGr_oZdTvAh0jVhLMsaG0eqLD2EXRMjdDXDfPvA7DASXP9ZAsejN4HiVDNnMNvGrNDh2dhOCzdRdZemVHI3e4fBcjJFSPlIDuJjwSilb0c1tLeV"/>
+          <div>
+            <span class="font-headline font-extrabold text-xl text-primary tracking-tight">NutriScan</span>
+            <span class="hidden sm:inline-block ml-2 text-[11px] font-bold text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full uppercase">Metabolic Intelligence</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Desktop Navigation Tabs -->
+      <nav class="hidden md:flex items-center gap-1 bg-surface-container-low px-1.5 py-1 rounded-2xl border border-outline-variant/20">
+        <button class="px-3.5 py-1.5 rounded-xl text-sm font-semibold transition-all" data-nav-screen="dashboard" onclick="navigateTo('dashboard')">Dashboard</button>
+        <button class="px-3.5 py-1.5 rounded-xl text-sm font-semibold transition-all" data-nav-screen="analyze" onclick="navigateTo('analyze')">Analyze Food</button>
+        <button class="px-3.5 py-1.5 rounded-xl text-sm font-semibold transition-all" data-nav-screen="tracker" onclick="navigateTo('tracker')">Meal Tracker</button>
+        <button class="px-3.5 py-1.5 rounded-xl text-sm font-semibold transition-all" data-nav-screen="chat" onclick="navigateTo('chat')">AI Companion</button>
+        <button class="px-3.5 py-1.5 rounded-xl text-sm font-semibold transition-all" data-nav-screen="compare" onclick="navigateTo('compare')">Compare</button>
+        <button class="px-3.5 py-1.5 rounded-xl text-sm font-semibold transition-all" data-nav-screen="favorites" onclick="navigateTo('favorites')">Favorites</button>
+      </nav>
+
+      <!-- User Diagnostic / Action Controls -->
+      <div class="flex items-center gap-2">
+        <button class="hidden lg:flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-xs font-semibold text-on-surface">
+          <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+          <span>Backend: Firebase + AI Connected</span>
+        </button>
+
+        <!-- Log Meal button -->
+        <button class="h-10 px-3.5 bg-primary text-on-primary rounded-xl text-sm font-bold shadow-sm flex items-center gap-1.5 active:scale-95 transition-all" onclick="openModal('', 'lunch')">
+          <span class="material-symbols-outlined text-[18px]">add</span>
+          <span class="hidden sm:inline">Log Meal / Scan</span>
+        </button>
+
+        <!-- Profile button / Avatar -->
+        <button class="flex items-center gap-2 p-1 rounded-full hover:bg-surface-container transition-all" onclick="navigateTo('profile')" title="View Clinical Profile">
+          <img alt="Avatar" class="w-9 h-9 rounded-full object-cover border border-outline-variant" src="https://lh3.googleusercontent.com/aida/AEtjO1XMkoptwEioQAtt38P51fI10LsyFpRQKlTGVxwpn6OQevTnOeZOTieEFK-B6WjH6ROhK9WtSBNuQ37FvJRxDym6UF0CIDjL9FRrEoo0s5I3QIo4c5XKhFKR5APL2eahOKr5BRn_8Ws1L0kOBfylqJ69kdzUYdxsz_sM3jotyvYhGtuE6dndIpMnt857rLU8YVHqv6k_3FD2W-1z1uJh4LcbAXZXA5VTBlnB0r3SqISDCCBTOtMC0MzMORAs"/>
+          <div class="hidden xl:flex flex-col text-left">
+            <span class="text-xs font-bold text-on-surface truncate dyn-user-name">Dr. Aarav</span>
+            <span class="text-[10px] text-primary font-semibold">Clinical Pro</span>
+          </div>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Backdrop & Menu -->
+  <div class="fixed inset-0 z-50 bg-inverse-surface/30 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300" id="drawer-backdrop" onclick="closeMobileDrawer()"></div>
+  <aside class="fixed top-0 bottom-0 left-0 z-50 w-4/5 max-w-xs bg-surface-container-lowest shadow-2xl flex flex-col -translate-x-full transition-transform duration-300 ease-out" id="mobile-drawer">
+    <div class="h-16 px-4 flex items-center justify-between border-b border-surface-container">
+      <div class="flex items-center gap-2">
+        <img alt="Logo" class="h-7 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1UH6ZKnVb7tFll70FMb9C9Nw0u8dVCfMpIO2dDiXAULVwGLF3UtkW0sUI-jqWKgdvopbeW3jDC9scHCgmMVs1UE5HXXOgSmAMJ5LoslazEpbRbyr4IbYcHKX6k3XMnKNxVG3HoZGW5IVPGr_oZdTvAh0jVhLMsaG0eqLD2EXRMjdDXDfPvA7DASXP9ZAsejN4HiVDNnMNvGrNDh2dhOCzdRdZemVHI3e4fBcjJFSPlIDuJjwSilb0c1tLeV"/>
+        <span class="font-headline font-bold text-lg text-primary">NutriScan Menu</span>
+      </div>
+      <button class="w-10 h-10 flex items-center justify-center rounded-xl text-on-surface-variant hover:bg-surface-container" onclick="closeMobileDrawer()">
+        <span class="material-symbols-outlined text-[22px]">close</span>
+      </button>
+    </div>
+    <div class="flex-1 overflow-y-auto p-4 flex flex-col gap-1">
+      <div class="px-2 pb-1 text-on-surface-variant text-[11px] font-bold uppercase tracking-wider">Nutrition Hub</div>
+      <a class="flex items-center gap-3 px-3 h-11 rounded-xl text-on-surface font-semibold hover:bg-surface-container transition-colors" href="#" onclick="navigateTo('dashboard')">
+        <span class="material-symbols-outlined text-primary text-[20px]">grid_view</span><span>Dashboard</span>
+      </a>
+      <a class="flex items-center gap-3 px-3 h-11 rounded-xl text-on-surface font-semibold hover:bg-surface-container transition-colors" href="#" onclick="navigateTo('analyze')">
+        <span class="material-symbols-outlined text-primary text-[20px]">document_scanner</span><span>Analyze Food</span>
+      </a>
+      <a class="flex items-center gap-3 px-3 h-11 rounded-xl text-on-surface font-semibold hover:bg-surface-container transition-colors" href="#" onclick="navigateTo('tracker')">
+        <span class="material-symbols-outlined text-primary text-[20px]">menu_book</span><span>Meal Tracker</span>
+      </a>
+      <a class="flex items-center gap-3 px-3 h-11 rounded-xl text-on-surface font-semibold hover:bg-surface-container transition-colors" href="#" onclick="navigateTo('chat')">
+        <span class="material-symbols-outlined text-primary text-[20px]">neurology</span><span>AI Companion</span>
+      </a>
+      <a class="flex items-center gap-3 px-3 h-11 rounded-xl text-on-surface font-semibold hover:bg-surface-container transition-colors" href="#" onclick="navigateTo('compare')">
+        <span class="material-symbols-outlined text-primary text-[20px]">balance</span><span>Compare Foods</span>
+      </a>
+      <a class="flex items-center gap-3 px-3 h-11 rounded-xl text-on-surface font-semibold hover:bg-surface-container transition-colors" href="#" onclick="navigateTo('favorites')">
+        <span class="material-symbols-outlined text-primary text-[20px]">favorite</span><span>Favorites</span>
+      </a>
+      <div class="my-2 h-px bg-outline-variant/30"></div>
+      <div class="px-2 pb-1 text-on-surface-variant text-[11px] font-bold uppercase tracking-wider">Account</div>
+      <a class="flex items-center gap-3 px-3 h-11 rounded-xl text-on-surface font-semibold hover:bg-surface-container transition-colors" href="#" onclick="navigateTo('profile')">
+        <span class="material-symbols-outlined text-on-surface-variant text-[20px]">person</span><span>Profile & Goals</span>
+      </a>
+      <a class="flex items-center gap-3 px-3 h-11 rounded-xl text-error font-semibold hover:bg-error-container/20 transition-colors btn-logout" href="#">
+        <span class="material-symbols-outlined text-error text-[20px]">logout</span><span>Sign Out</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- ================= MAIN CONTENT CONTAINER ================= -->
+  <main class="flex-1 pt-16 pb-24 md:pb-12 w-full">
+
+    <!-- ================= SCREEN 1: LOGIN (Image 9) ================= -->
+    <section class="app-screen max-w-6xl mx-auto px-4 py-8" id="screen-login">
+      <!-- Portal Sub-Header -->
+      <div class="flex items-center justify-between mb-8 pb-3 border-b border-outline-variant/20">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-[18px] text-tertiary">lock</span>
+          <span class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">256-BIT SSL • HIPAA COMPLIANT PORTAL</span>
+        </div>
+        <div class="flex items-center gap-3 text-sm">
+          <span class="font-bold text-primary border-b-2 border-primary pb-0.5">Sign In</span>
+          <button class="text-on-surface-variant hover:text-on-surface" onclick="navigateTo('register')">Register</button>
+          <button class="text-xs bg-surface-container px-3 py-1 rounded-full font-bold text-on-surface btn-demo-login">Clinical Demo</button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+        <!-- Left Hero Column with Food Telemetry Card -->
+        <div class="flex flex-col gap-4">
+          <span class="inline-block self-start text-[11px] font-bold uppercase tracking-wider bg-surface-container text-on-surface-variant px-3 py-1 rounded-full">
+            ● Clinical Metabolic Engine V4.2
+          </span>
+          <h1 class="font-headline font-extrabold text-3xl sm:text-4xl text-on-surface leading-tight">
+            Welcome back to <span class="text-primary">NutriScan</span>
+          </h1>
+          <p class="text-on-surface-variant text-base">
+            Your personal nutrition companion is ready to help you understand your food and reach your clinical nutrition goals.
+          </p>
+
+          <!-- Food Scan Card Mockup -->
+          <div class="relative w-full rounded-2xl overflow-hidden shadow-lg border border-outline-variant/30 mt-2">
+            <img alt="Mediterranean bowl" class="w-full h-72 object-cover" src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80"/>
+            <div class="absolute inset-0 bg-gradient-to-t from-inverse-surface/80 via-transparent to-black/30"></div>
+            <!-- Badges -->
+            <div class="absolute top-3 left-3 bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1.5 rounded-xl shadow-sm">
+              <span class="text-[10px] text-on-surface-variant uppercase font-bold block">Energy</span>
+              <span class="font-headline font-bold text-lg text-on-surface">520 <span class="text-xs font-normal">kcal</span></span>
+            </div>
+            <div class="absolute top-3 right-3 bg-surface-container-lowest/90 backdrop-blur-md px-2.5 py-1 rounded-full text-[11px] font-bold text-tertiary shadow-sm">
+              CONF: 99.4%
+            </div>
+            <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between">
+              <div class="bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1.5 rounded-xl">
+                <span class="text-[10px] text-tertiary font-bold uppercase block">Protein HIGH YIELD</span>
+                <span class="font-headline font-bold text-on-surface">28g / 42g req</span>
+              </div>
+              <div class="bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1.5 rounded-xl text-right">
+                <span class="text-[10px] text-secondary font-bold uppercase block">Carbs (Grain)</span>
+                <span class="font-headline font-bold text-on-surface">62g</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 text-[11px] text-on-surface-variant pt-2">
+            <span class="material-symbols-outlined text-[16px] text-primary">verified_user</span>
+            <span>CLINICAL-GRADE METABOLIC TELEMETRY • FIRESTORE SYNCHRONIZED • HIPAA CERTIFIED</span>
+          </div>
+        </div>
+
+        <!-- Right Form Column -->
+        <div class="bg-surface-container-lowest p-6 sm:p-8 rounded-3xl shadow-xl border border-outline-variant/30 flex flex-col gap-5">
+          <div>
+            <div class="flex items-center justify-between">
+              <h2 class="font-headline font-bold text-2xl text-on-surface">Welcome Back</h2>
+              <span class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined text-[20px]">vital_signs</span>
+              </span>
+            </div>
+            <p class="text-on-surface-variant text-sm mt-1">Sign in to your NutriScan account and continue your nutrition journey.</p>
+          </div>
+
+          <form id="loginForm" class="flex flex-col gap-4">
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1">Email Address</label>
+              <div class="relative flex items-center bg-surface-container-low rounded-xl px-3 border border-outline-variant/30 focus-within:border-primary">
+                <span class="material-symbols-outlined text-[18px] text-on-surface-variant mr-2">mail</span>
+                <input class="w-full py-3 bg-transparent text-sm text-on-surface focus:outline-none" id="loginEmail" placeholder="e.g. marcus.vance@metabolic-health.org" type="email" required/>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Password</label>
+                <button class="text-xs text-primary font-bold hover:underline" type="button" onclick="navigateTo('forgot')">Forgot Password?</button>
+              </div>
+              <div class="relative flex items-center bg-surface-container-low rounded-xl px-3 border border-outline-variant/30 focus-within:border-primary">
+                <span class="material-symbols-outlined text-[18px] text-on-surface-variant mr-2">lock</span>
+                <input class="w-full py-3 bg-transparent text-sm text-on-surface focus:outline-none" id="loginPassword" placeholder="••••••••••••" type="password" required/>
+                <button class="text-on-surface-variant hover:text-on-surface" data-toggle-pwd="loginPassword" type="button">
+                  <span class="material-symbols-outlined text-[20px]">visibility</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between text-xs text-on-surface-variant">
+              <label class="flex items-center gap-2 cursor-pointer">
+                <input type="checkbox" checked class="rounded accent-primary"/>
+                <span>Remember this workstation (30-day token)</span>
+              </label>
+            </div>
+
+            <button class="w-full h-12 bg-primary text-on-primary font-headline font-bold text-sm rounded-xl shadow-md flex items-center justify-center gap-2 active:scale-98 transition-all" id="loginSubmitBtn" type="submit">
+              <span>Log In</span>
+              <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+            </button>
+          </form>
+
+          <div class="relative flex items-center justify-center my-1">
+            <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-outline-variant/30"></div></div>
+            <span class="relative bg-surface-container-lowest px-3 text-[11px] uppercase font-bold text-on-surface-variant">Or Authenticate With</span>
+          </div>
+
+          <button class="w-full h-11 bg-surface-container-low hover:bg-surface-container rounded-xl text-sm font-semibold text-on-surface flex items-center justify-center gap-2 border border-outline-variant/30 btn-google-login transition-all" type="button">
+            <svg class="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.66v3.05h3.87c2.26-2.09 3.67-5.17 3.67-9.15z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.87-3.05c-1.08.72-2.45 1.16-4.06 1.16-3.13 0-5.78-2.11-6.73-4.96H1.25v3.15C3.25 21.36 7.35 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24A7.18 7.18 0 0 1 4.89 12c0-.78.14-1.53.38-2.24V6.61H1.25A11.967 11.967 0 0 0 0 12c0 1.92.45 3.74 1.25 5.39l4.02-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.35 0 3.25 2.64 1.25 6.61l4.02 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></svg>
+            <span>Continue with Google</span>
+          </button>
+
+          <p class="text-center text-xs text-on-surface-variant">
+            Don't have an account? <button class="font-bold text-primary hover:underline ml-1" onclick="navigateTo('register')">Sign Up</button>
+          </p>
+
+          <!-- Firebase Status Pill -->
+          <div class="bg-surface-container-low p-2 rounded-xl text-[11px] text-on-surface-variant flex items-center justify-between">
+            <span class="flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span>Firebase Auth Ready</span>
+            <span class="font-mono text-[10px]">Modular SDK v10.x</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SCREEN 2: REGISTER (Image 7) ================= -->
+    <section class="app-screen hidden max-w-6xl mx-auto px-4 py-8" id="screen-register">
+      <div class="flex items-center justify-between mb-8 pb-3 border-b border-outline-variant/20">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-[18px] text-tertiary">lock</span>
+          <span class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">256-BIT SSL • HIPAA COMPLIANT</span>
+        </div>
+        <div class="flex items-center gap-3 text-sm">
+          <button class="text-on-surface-variant hover:text-on-surface" onclick="navigateTo('login')">Sign In</button>
+          <span class="font-bold text-primary border-b-2 border-primary pb-0.5">Register</span>
+          <button class="text-xs bg-surface-container px-3 py-1 rounded-full font-bold text-on-surface btn-demo-login">Clinical Demo</button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+        <!-- Left Hero Column with Orchard Apple Card -->
+        <div class="flex flex-col gap-4">
+          <span class="inline-block self-start text-[11px] font-bold uppercase tracking-wider bg-surface-container text-on-surface-variant px-3 py-1 rounded-full">
+            ● Metabolic Vitality Engine
+          </span>
+          <h1 class="font-headline font-extrabold text-3xl sm:text-4xl text-on-surface leading-tight">
+            Start Your Nutrition Journey with <span class="text-primary">NutriScan</span>
+          </h1>
+          <p class="text-on-surface-variant text-base">
+            Join over 45,000+ members taking control of their metabolic health with AI-powered food scanning and personalized clinical insights.
+          </p>
+
+          <div class="relative w-full rounded-2xl overflow-hidden shadow-lg border border-outline-variant/30 mt-2">
+            <img alt="Honeycrisp Orchard Apples" class="w-full h-64 object-cover" src="https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&w=800&q=80"/>
+            <div class="absolute inset-0 bg-gradient-to-t from-inverse-surface/80 via-transparent to-black/20"></div>
+            <div class="absolute top-3 left-3 bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-primary shadow-sm flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-primary"></span>92/100 Metabolic Health Index
+            </div>
+            <div class="absolute bottom-3 left-3 right-3 flex items-end justify-between">
+              <div>
+                <p class="text-[10px] text-surface-container uppercase font-bold">Verified Whole Food</p>
+                <h3 class="font-headline font-bold text-on-primary text-lg">Honeycrisp Orchard Apple</h3>
+              </div>
+              <span class="bg-surface-container-lowest/90 backdrop-blur-md px-2.5 py-1 rounded-lg text-xs font-bold text-primary">
+                4.4g / 95 kcal
+              </span>
+            </div>
+          </div>
+
+          <!-- Feature checkmarks -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2">
+            <div class="flex items-center gap-2 p-2.5 bg-surface-container-lowest rounded-xl border border-outline-variant/20 shadow-xs">
+              <span class="material-symbols-outlined text-[18px] text-primary">check_circle</span>
+              <span class="text-xs font-semibold text-on-surface">Instant AI Food Scanner</span>
+            </div>
+            <div class="flex items-center gap-2 p-2.5 bg-surface-container-lowest rounded-xl border border-outline-variant/20 shadow-xs">
+              <span class="material-symbols-outlined text-[18px] text-primary">check_circle</span>
+              <span class="text-xs font-semibold text-on-surface">Macronutrient Breakdown</span>
+            </div>
+            <div class="flex items-center gap-2 p-2.5 bg-surface-container-lowest rounded-xl border border-outline-variant/20 shadow-xs">
+              <span class="material-symbols-outlined text-[18px] text-primary">check_circle</span>
+              <span class="text-xs font-semibold text-on-surface">Firestore Real-Time Sync</span>
+            </div>
+            <div class="flex items-center gap-2 p-2.5 bg-surface-container-lowest rounded-xl border border-outline-variant/20 shadow-xs">
+              <span class="material-symbols-outlined text-[18px] text-primary">check_circle</span>
+              <span class="text-xs font-semibold text-on-surface">Gemini AI Nutrition Coaching</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Register Card -->
+        <div class="bg-surface-container-lowest p-6 sm:p-8 rounded-3xl shadow-xl border border-outline-variant/30 flex flex-col gap-4">
+          <div>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-primary">Fast Onboarding</span>
+            <h2 class="font-headline font-bold text-2xl text-on-surface mt-0.5">Create Your NutriScan Account</h2>
+            <p class="text-on-surface-variant text-sm">Start tracking your nutrition and build healthier eating habits.</p>
+          </div>
+
+          <form id="registerForm" class="flex flex-col gap-3.5">
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1">Full Name</label>
+              <div class="flex items-center bg-surface-container-low rounded-xl px-3 border border-outline-variant/30 focus-within:border-primary">
+                <span class="material-symbols-outlined text-[18px] text-on-surface-variant mr-2">person</span>
+                <input class="w-full py-2.5 bg-transparent text-sm text-on-surface focus:outline-none" id="regName" placeholder="e.g. Dr. Aarav Patel" type="text" required/>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1">Email Address</label>
+              <div class="flex items-center bg-surface-container-low rounded-xl px-3 border border-outline-variant/30 focus-within:border-primary">
+                <span class="material-symbols-outlined text-[18px] text-on-surface-variant mr-2">mail</span>
+                <input class="w-full py-2.5 bg-transparent text-sm text-on-surface focus:outline-none" id="regEmail" placeholder="e.g. user@healthmail.com" type="email" required/>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1">Password</label>
+              <div class="flex items-center bg-surface-container-low rounded-xl px-3 border border-outline-variant/30 focus-within:border-primary">
+                <span class="material-symbols-outlined text-[18px] text-on-surface-variant mr-2">lock</span>
+                <input class="w-full py-2.5 bg-transparent text-sm text-on-surface focus:outline-none" id="regPassword" placeholder="Create a password" type="password" required/>
+                <button class="text-on-surface-variant hover:text-on-surface" data-toggle-pwd="regPassword" type="button">
+                  <span class="material-symbols-outlined text-[20px]">visibility</span>
+                </button>
+              </div>
+              <div class="flex items-center gap-3 text-[10px] text-on-surface-variant mt-1 px-1">
+                <span>○ 6+ characters</span>
+                <span>○ Uppercase</span>
+                <span>○ Number</span>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1">Confirm Password</label>
+              <div class="flex items-center bg-surface-container-low rounded-xl px-3 border border-outline-variant/30 focus-within:border-primary">
+                <span class="material-symbols-outlined text-[18px] text-on-surface-variant mr-2">lock_reset</span>
+                <input class="w-full py-2.5 bg-transparent text-sm text-on-surface focus:outline-none" id="regConfirmPassword" placeholder="Confirm your password" type="password" required/>
+              </div>
+            </div>
+
+            <label class="flex items-start gap-2 text-xs text-on-surface-variant cursor-pointer pt-1">
+              <input type="checkbox" id="regTermsCheckbox" checked class="mt-0.5 rounded accent-primary"/>
+              <span>I agree to the <strong class="text-primary">Terms of Service</strong> and <strong class="text-primary">Privacy Policy</strong>, and consent to clinical nutrition telemetry storage.</span>
+            </label>
+
+            <button class="w-full h-11 bg-primary text-on-primary font-headline font-bold text-sm rounded-xl shadow-md flex items-center justify-center gap-2 active:scale-98 transition-all mt-1" id="regSubmitBtn" type="submit">
+              <span>Create Account</span>
+              <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+            </button>
+          </form>
+
+          <div class="relative flex items-center justify-center">
+            <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-outline-variant/30"></div></div>
+            <span class="relative bg-surface-container-lowest px-3 text-[11px] uppercase font-bold text-on-surface-variant">Or</span>
+          </div>
+
+          <button class="w-full h-10 bg-surface-container-low hover:bg-surface-container rounded-xl text-sm font-semibold text-on-surface flex items-center justify-center gap-2 border border-outline-variant/30 btn-google-login transition-all" type="button">
+            <svg class="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.66v3.05h3.87c2.26-2.09 3.67-5.17 3.67-9.15z"/><path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.87-3.05c-1.08.72-2.45 1.16-4.06 1.16-3.13 0-5.78-2.11-6.73-4.96H1.25v3.15C3.25 21.36 7.35 24 12 24z"/><path fill="#FBBC05" d="M5.27 14.24A7.18 7.18 0 0 1 4.89 12c0-.78.14-1.53.38-2.24V6.61H1.25A11.967 11.967 0 0 0 0 12c0 1.92.45 3.74 1.25 5.39l4.02-3.15z"/><path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.35 0 3.25 2.64 1.25 6.61l4.02 3.15c.95-2.85 3.6-4.96 6.73-4.96z"/></svg>
+            <span>Continue with Google</span>
+          </button>
+
+          <p class="text-center text-xs text-on-surface-variant">
+            Already have an account? <button class="font-bold text-primary hover:underline ml-1" onclick="navigateTo('login')">Log In</button>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SCREEN 3: FORGOT PASSWORD (Image 5) ================= -->
+    <section class="app-screen hidden max-w-lg mx-auto px-4 py-12" id="screen-forgot">
+      <div class="bg-surface-container-lowest p-6 sm:p-8 rounded-3xl shadow-xl border border-outline-variant/30 flex flex-col gap-5">
+        <div class="flex items-center justify-between">
+          <button class="flex items-center gap-1 text-xs font-bold text-on-surface-variant hover:text-on-surface" onclick="navigateTo('login')">
+            <span class="material-symbols-outlined text-[16px]">arrow_back</span>
+            <span>Back to Login</span>
+          </button>
+          <span class="text-[10px] font-bold text-primary bg-surface-container px-2.5 py-0.5 rounded-full uppercase">Auth Tier-1</span>
+        </div>
+
+        <div id="forgotFormBox" class="flex flex-col gap-4">
+          <div class="w-12 h-12 rounded-2xl bg-surface-container flex items-center justify-center text-primary">
+            <span class="material-symbols-outlined text-[26px]">history</span>
+          </div>
+          <div>
+            <h2 class="font-headline font-bold text-2xl text-on-surface">Forgot your password?</h2>
+            <p class="text-on-surface-variant text-sm mt-1">
+              Enter your email address and we'll send you a link to reset your password. You'll be back to tracking your nutrition in seconds.
+            </p>
+          </div>
+
+          <form id="forgotPasswordForm" class="flex flex-col gap-4">
+            <div>
+              <div class="flex items-center justify-between mb-1">
+                <label class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Registered Email Address</label>
+                <span class="text-[10px] text-tertiary font-bold">HIPAA Protected</span>
+              </div>
+              <div class="flex items-center bg-surface-container-low rounded-xl px-3 border border-outline-variant/30 focus-within:border-primary">
+                <span class="material-symbols-outlined text-[18px] text-on-surface-variant mr-2">mail</span>
+                <input class="w-full py-3 bg-transparent text-sm text-on-surface focus:outline-none" id="forgotEmail" placeholder="e.g. alex.chen@metabolic.health" type="email" required/>
+              </div>
+            </div>
+
+            <div class="p-3 bg-surface-container-low rounded-xl flex items-center justify-between text-xs">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary text-[18px]">verified</span>
+                <div>
+                  <span class="font-bold text-on-surface block">Target Intake Locked</span>
+                  <span class="text-on-surface-variant">2,200 kcal/day • Protocol active</span>
+                </div>
+              </div>
+              <span class="material-symbols-outlined text-primary text-[18px]">check_circle</span>
+            </div>
+
+            <button class="w-full h-12 bg-primary text-on-primary font-headline font-bold text-sm rounded-xl shadow-md flex items-center justify-center gap-2 active:scale-98 transition-all" id="forgotSubmitBtn" type="submit">
+              <span>Send Reset Link</span>
+              <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+            </button>
+          </form>
+
+          <div class="text-center text-[11px] text-on-surface-variant pt-2 border-t border-surface-container">
+            Protected by 256-bit encryption • Firebase Auth Standard
+          </div>
+        </div>
+
+        <div id="forgotSuccessBox" class="hidden flex flex-col items-center text-center gap-3 py-6">
+          <span class="material-symbols-outlined text-[48px] text-primary">mark_email_read</span>
+          <h3 class="font-headline font-bold text-xl text-on-surface">Reset Link Dispatched</h3>
+          <p class="text-sm text-on-surface-variant">Please check your inbox and follow the link to establish your new clinical password.</p>
+          <button class="mt-3 px-6 h-10 bg-primary text-on-primary rounded-xl text-xs font-bold" onclick="navigateTo('login')">Return to Login</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SCREEN 4: DASHBOARD (Image 3 Desktop & Image 13 Mobile) ================= -->
+    <section class="app-screen hidden max-w-7xl mx-auto px-4 flex flex-col gap-6" id="screen-dashboard">
+      
+      <!-- Diagnostic Ribbon -->
+      <div class="flex items-center justify-between bg-surface-container-low px-3 py-2 rounded-2xl text-xs overflow-x-auto gap-3 no-scrollbar">
+        <div class="flex items-center gap-2 shrink-0 bg-surface-container-lowest px-3 py-1 rounded-full shadow-xs">
+          <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+          <span class="font-semibold text-on-surface dyn-user-email">aarav.patel@healthmail.com</span>
+        </div>
+        <div class="flex items-center gap-1.5 shrink-0 bg-surface-container-lowest px-3 py-1 rounded-full shadow-xs">
+          <span class="material-symbols-outlined text-[15px] text-tertiary">cloud_sync</span>
+          <span class="text-on-surface-variant">Firestore Live Sync</span>
+        </div>
+        <div class="flex items-center gap-1.5 shrink-0 bg-primary-container px-3 py-1 rounded-full text-on-primary shadow-xs font-semibold">
+          <span class="material-symbols-outlined text-[15px]">auto_awesome</span>
+          <span>Gemini AI Engine Online</span>
+        </div>
+      </div>
+
+      <!-- Hero Header & Search Section (Desktop style Image 3) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        <div class="lg:col-span-7 flex flex-col gap-3">
+          <span class="self-start text-[11px] font-bold uppercase tracking-wider bg-surface-container text-on-surface-variant px-3 py-1 rounded-full">
+            ● Metabolic Dietary Intelligence
+          </span>
+          <h1 class="font-headline font-extrabold text-3xl sm:text-4xl text-on-surface leading-tight">
+            Understand Your Food. <br/><span class="text-primary">Improve Your Nutrition.</span>
+          </h1>
+          <p class="text-on-surface-variant text-sm sm:text-base max-w-xl">
+            Analyze what you eat, decipher micro & macronutrient profiles instantly, and receive actionable real-time metabolic coaching powered by conversational AI.
+          </p>
+
+          <!-- Search Input Box with Typeahead -->
+          <div class="relative w-full max-w-xl mt-2">
+            <div class="flex items-center bg-surface-container-lowest rounded-2xl shadow-md border border-outline-variant/30 p-1.5">
+              <span class="material-symbols-outlined text-[20px] text-on-surface-variant ml-2.5">search</span>
+              <input class="w-full bg-transparent px-3 py-2 text-sm text-on-surface placeholder:text-on-surface-variant focus:outline-none" id="foodSearchInput" placeholder="Search food (e.g. Chicken Biryani, Paneer, Apple)..." type="text" autocomplete="off"/>
+              <button class="h-10 px-4 bg-primary text-on-primary font-headline font-bold text-xs rounded-xl shadow-sm flex items-center gap-1 active:scale-95 transition-all" onclick="selectFoodForAnalysis('chicken_biryani')" type="button">
+                <span>Analyze</span>
+              </button>
+            </div>
+            <!-- Typeahead Dropdown -->
+            <div class="absolute top-full left-0 right-0 z-30 mt-1 bg-surface-container-lowest rounded-2xl shadow-2xl border border-outline-variant/30 overflow-hidden hidden" id="searchSuggestionsBox"></div>
+          </div>
+
+          <!-- Trending Chips -->
+          <div class="flex items-center gap-2 overflow-x-auto py-1 no-scrollbar text-xs">
+            <span class="font-bold text-on-surface-variant shrink-0 flex items-center gap-1">
+              <span class="material-symbols-outlined text-[14px] text-secondary">trending_up</span> Trending:
+            </span>
+            <button class="shrink-0 px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface font-semibold shadow-xs hover:bg-surface-container transition-colors" onclick="selectFoodForAnalysis('chicken_biryani')">🍗 Chicken Biryani</button>
+            <button class="shrink-0 px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface font-semibold shadow-xs hover:bg-surface-container transition-colors" onclick="selectFoodForAnalysis('rolled_oats')">🥣 Oatmeal</button>
+            <button class="shrink-0 px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface font-semibold shadow-xs hover:bg-surface-container transition-colors" onclick="selectFoodForAnalysis('paneer_tikka')">🧀 Paneer Tikka</button>
+            <button class="shrink-0 px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface font-semibold shadow-xs hover:bg-surface-container transition-colors" onclick="selectFoodForAnalysis('crisp_apple')">🍎 Crisp Apple</button>
+            <button class="shrink-0 px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface font-semibold shadow-xs hover:bg-surface-container transition-colors" onclick="selectFoodForAnalysis('yellow_dal')">🍲 Dal Tadka</button>
+          </div>
+        </div>
+
+        <!-- Right Hero Dish Card -->
+        <div class="lg:col-span-5">
+          <div class="relative rounded-3xl overflow-hidden shadow-xl border border-outline-variant/30 group">
+            <img alt="Featured Mediterranean Bowl" class="w-full h-64 sm:h-72 object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80"/>
+            <div class="absolute inset-0 bg-gradient-to-t from-inverse-surface/90 via-inverse-surface/30 to-transparent"></div>
+            <!-- Badges -->
+            <div class="absolute top-3 left-3 flex items-center gap-2">
+              <span class="bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-on-surface shadow-xs">
+                🔥 520 kcal Per Serving
+              </span>
+              <span class="bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-primary shadow-xs">
+                💪 28g Protein (93% RDA)
+              </span>
+            </div>
+            <div class="absolute bottom-3 left-3 right-3 flex items-end justify-between">
+              <div>
+                <span class="text-[10px] text-surface-container uppercase font-bold tracking-wider">AI Scan Verified</span>
+                <h3 class="font-headline font-bold text-xl text-on-primary">Mediterranean Quinoa Bowl</h3>
+                <div class="flex items-center gap-3 text-xs text-on-primary/90 mt-1">
+                  <span>🥑 18g Healthy Fats</span>
+                  <span>🌾 7.5g Dietary Fiber</span>
+                </div>
+              </div>
+              <button class="h-9 px-3.5 bg-surface-container-lowest text-primary font-headline font-bold text-xs rounded-xl shadow-md active:scale-95 transition-all" onclick="selectFoodForAnalysis('chicken_biryani')">
+                View Analysis
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= DAILY TELEMETRY SECTION ================= -->
+      <section class="flex flex-col gap-4 pt-4">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <div>
+            <h2 class="font-headline font-bold text-2xl text-on-surface">Daily Telemetry</h2>
+            <p class="text-sm text-on-surface-variant">Good morning, <span class="dyn-user-name font-semibold text-on-surface">Dr. Aarav</span>! Here is your metabolic telemetry breakdown for today.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button class="h-9 px-3 bg-surface-container text-on-surface rounded-xl text-xs font-bold hover:bg-surface-container-high transition-all" onclick="navigateTo('profile')">
+              <span class="material-symbols-outlined text-[15px] align-middle mr-1">tune</span>Adjust Targets
+            </button>
+            <button class="h-9 px-3 bg-primary text-on-primary rounded-xl text-xs font-bold shadow-sm active:scale-95 transition-all" onclick="openModal('', 'snacks')">
+              <span class="material-symbols-outlined text-[15px] align-middle mr-1">add_circle</span>Quick Add
+            </button>
+          </div>
+        </div>
+
+        <!-- Calorie Ring + Telemetry Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+          
+          <!-- Circular Calorie Gauge Card -->
+          <div class="md:col-span-5 bg-surface-container-lowest p-6 rounded-3xl shadow-sm border border-outline-variant/30 flex items-center justify-between gap-6">
+            <div class="relative w-36 h-36 shrink-0 flex items-center justify-center">
+              <svg class="w-full h-full transform -rotate-90" viewBox="0 0 120 120">
+                <circle cx="60" cy="60" fill="none" r="50" stroke="#ecefe8" stroke-width="12"></circle>
+                <circle id="svgCalorieProgress" cx="60" cy="60" fill="none" r="50" stroke="#2e7d32" stroke-dasharray="314.16" stroke-dashoffset="111.5" stroke-linecap="round" stroke-width="12" class="transition-all duration-700"></circle>
+                <circle cx="60" cy="60" fill="none" r="38" stroke="#e0e3dd" stroke-width="4"></circle>
+                <circle cx="60" cy="60" fill="none" r="38" stroke="#006342" stroke-dasharray="238.76" stroke-dashoffset="82" stroke-linecap="round" stroke-width="4"></circle>
+              </svg>
+              <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                <span class="text-[10px] text-on-surface-variant uppercase font-bold">Consumed</span>
+                <span class="font-headline font-extrabold text-2xl text-on-surface dyn-cal-consumed">1,420</span>
+                <span class="text-xs font-bold text-primary dyn-cal-pct">65%</span>
+              </div>
+            </div>
+            <div class="flex-1 flex flex-col justify-between">
+              <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-on-surface-variant block">Energy Budget</span>
+                <div class="flex items-baseline gap-1 mt-1">
+                  <span class="font-headline font-extrabold text-3xl text-primary dyn-cal-remaining">780</span>
+                  <span class="text-xs font-semibold text-on-surface-variant">kcal left</span>
+                </div>
+                <p class="text-xs text-on-surface-variant mt-1.5">Target: <strong class="dyn-cal-goal">2,200</strong> kcal</p>
+              </div>
+              <div class="mt-4 pt-3 border-t border-surface-container flex items-center justify-between text-xs">
+                <span class="text-on-surface-variant">Dinner Window:</span>
+                <span class="font-bold text-primary">~550 kcal ready</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3 Macro Cards + Metabolic Index -->
+          <div class="md:col-span-7 grid grid-cols-2 gap-3">
+            <!-- Protein -->
+            <div class="bg-surface-container-lowest p-4 rounded-2xl shadow-sm border border-outline-variant/30 flex flex-col justify-between">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Bio-Protein</span>
+                <span class="material-symbols-outlined text-[18px] text-tertiary">fitness_center</span>
+              </div>
+              <div class="my-2">
+                <div class="flex items-baseline gap-1">
+                  <span class="font-headline font-extrabold text-xl text-on-surface dyn-protein-val">72g</span>
+                  <span class="text-xs text-on-surface-variant dyn-protein-goal">/ 110g</span>
+                </div>
+                <div class="w-full bg-surface-container h-2 rounded-full mt-2 overflow-hidden">
+                  <div class="bg-tertiary h-full rounded-full transition-all duration-500 dyn-protein-bar" style="width: 65%;"></div>
+                </div>
+              </div>
+              <span class="text-[11px] text-on-surface-variant font-medium">Completion: <strong class="dyn-protein-pct">65%</strong></span>
+            </div>
+
+            <!-- Complex Carbs -->
+            <div class="bg-surface-container-lowest p-4 rounded-2xl shadow-sm border border-outline-variant/30 flex flex-col justify-between">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Complex Carbs</span>
+                <span class="material-symbols-outlined text-[18px] text-secondary">grain</span>
+              </div>
+              <div class="my-2">
+                <div class="flex items-baseline gap-1">
+                  <span class="font-headline font-extrabold text-xl text-on-surface dyn-carbs-val">180g</span>
+                  <span class="text-xs text-on-surface-variant dyn-carbs-goal">/ 280g</span>
+                </div>
+                <div class="w-full bg-surface-container h-2 rounded-full mt-2 overflow-hidden">
+                  <div class="bg-secondary-container h-full rounded-full transition-all duration-500 dyn-carbs-bar" style="width: 64%;"></div>
+                </div>
+              </div>
+              <span class="text-[11px] text-on-surface-variant font-medium">Glycemic Load: <strong class="dyn-carbs-pct">64%</strong></span>
+            </div>
+
+            <!-- Essential Lipids -->
+            <div class="bg-surface-container-lowest p-4 rounded-2xl shadow-sm border border-outline-variant/30 flex flex-col justify-between">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Essential Lipids</span>
+                <span class="material-symbols-outlined text-[18px] text-primary">eco</span>
+              </div>
+              <div class="my-2">
+                <div class="flex items-baseline gap-1">
+                  <span class="font-headline font-extrabold text-xl text-on-surface dyn-fats-val">48g</span>
+                  <span class="text-xs text-on-surface-variant dyn-fats-goal">/ 70g</span>
+                </div>
+                <div class="w-full bg-surface-container h-2 rounded-full mt-2 overflow-hidden">
+                  <div class="bg-primary-container h-full rounded-full transition-all duration-500 dyn-fats-bar" style="width: 68%;"></div>
+                </div>
+              </div>
+              <span class="text-[11px] text-on-surface-variant font-medium">Lipid Balance: <strong class="dyn-fats-pct">68%</strong></span>
+            </div>
+
+            <!-- Metabolic Health Index -->
+            <div class="bg-surface-container-lowest p-4 rounded-2xl shadow-sm border border-outline-variant/30 flex flex-col justify-between">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold uppercase tracking-wider text-on-surface-variant">Metabolic Index</span>
+                <span class="material-symbols-outlined text-[18px] text-tertiary-container">vital_signs</span>
+              </div>
+              <div class="my-2">
+                <div class="flex items-baseline gap-1">
+                  <span class="font-headline font-extrabold text-2xl text-tertiary-container">92</span>
+                  <span class="text-xs text-on-surface-variant">/ 100</span>
+                </div>
+                <div class="w-full bg-surface-container h-2 rounded-full mt-2 overflow-hidden">
+                  <div class="bg-tertiary-container h-full rounded-full" style="width: 92%;"></div>
+                </div>
+              </div>
+              <span class="text-[11px] text-tertiary font-bold flex items-center gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>Optimal Glycemic Zone
+              </span>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ================= TODAY'S MEAL LEDGER & INSIGHTS ================= -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-2">
+        
+        <!-- Left: Today's Meal Ledger (8 cols) -->
+        <div class="lg:col-span-8 flex flex-col gap-4">
+          <div class="flex items-center justify-between">
+            <h3 class="font-headline font-bold text-xl text-on-surface">Today's Meal Ledger</h3>
+            <span class="text-xs text-on-surface-variant">Real-time synchronized with Firestore</span>
+          </div>
+
+          <!-- Breakfast Block -->
+          <div class="bg-surface-container-lowest rounded-2xl shadow-sm border border-outline-variant/30 overflow-hidden">
+            <div class="p-3.5 flex items-center justify-between bg-surface-container-low/60 border-b border-surface-container">
+              <div class="flex items-center gap-2.5">
+                <span class="w-8 h-8 rounded-xl bg-surface-container flex items-center justify-center text-primary">
+                  <span class="material-symbols-outlined text-[18px]">wb_sunny</span>
+                </span>
+                <div>
+                  <h4 class="font-headline font-bold text-sm text-on-surface">Breakfast</h4>
+                  <p class="text-[11px] text-on-surface-variant">Logged morning window</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="font-headline font-bold text-sm text-on-surface" id="ledger-cal-breakfast">410 kcal</span>
+                <button class="h-8 px-2.5 bg-surface-container text-primary font-bold text-xs rounded-lg active:scale-95 transition-all" onclick="openModal('', 'breakfast')">
+                  + Add Item
+                </button>
+              </div>
+            </div>
+            <div class="p-3 flex flex-col gap-2" id="ledger-list-breakfast"></div>
+          </div>
+
+          <!-- Lunch Block -->
+          <div class="bg-surface-container-lowest rounded-2xl shadow-sm border border-outline-variant/30 overflow-hidden">
+            <div class="p-3.5 flex items-center justify-between bg-surface-container-low/60 border-b border-surface-container">
+              <div class="flex items-center gap-2.5">
+                <span class="w-8 h-8 rounded-xl bg-surface-container flex items-center justify-center text-secondary">
+                  <span class="material-symbols-outlined text-[18px]">lunch_dining</span>
+                </span>
+                <div>
+                  <h4 class="font-headline font-bold text-sm text-on-surface">Lunch</h4>
+                  <p class="text-[11px] text-on-surface-variant">Midday metabolic window</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="font-headline font-bold text-sm text-on-surface" id="ledger-cal-lunch">620 kcal</span>
+                <button class="h-8 px-2.5 bg-surface-container text-primary font-bold text-xs rounded-lg active:scale-95 transition-all" onclick="openModal('', 'lunch')">
+                  + Add Item
+                </button>
+              </div>
+            </div>
+            <div class="p-3 flex flex-col gap-2" id="ledger-list-lunch"></div>
+          </div>
+
+          <!-- Snacks Block -->
+          <div class="bg-surface-container-lowest rounded-2xl shadow-sm border border-outline-variant/30 overflow-hidden">
+            <div class="p-3.5 flex items-center justify-between bg-surface-container-low/60 border-b border-surface-container">
+              <div class="flex items-center gap-2.5">
+                <span class="w-8 h-8 rounded-xl bg-surface-container flex items-center justify-center text-tertiary">
+                  <span class="material-symbols-outlined text-[18px]">nutrition</span>
+                </span>
+                <div>
+                  <h4 class="font-headline font-bold text-sm text-on-surface">Snacks</h4>
+                  <p class="text-[11px] text-on-surface-variant">Sustained glycemic fuel</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="font-headline font-bold text-sm text-on-surface" id="ledger-cal-snacks">180 kcal</span>
+                <button class="h-8 px-2.5 bg-surface-container text-primary font-bold text-xs rounded-lg active:scale-95 transition-all" onclick="openModal('', 'snacks')">
+                  + Add Item
+                </button>
+              </div>
+            </div>
+            <div class="p-3 flex flex-col gap-2" id="ledger-list-snacks"></div>
+          </div>
+
+          <!-- Dinner Block -->
+          <div class="bg-surface-container-lowest rounded-2xl shadow-sm border border-outline-variant/30 overflow-hidden">
+            <div class="p-3.5 flex items-center justify-between bg-surface-container-low/60 border-b border-surface-container">
+              <div class="flex items-center gap-2.5">
+                <span class="w-8 h-8 rounded-xl bg-surface-container flex items-center justify-center text-on-surface-variant">
+                  <span class="material-symbols-outlined text-[18px]">nightlife</span>
+                </span>
+                <div>
+                  <h4 class="font-headline font-bold text-sm text-on-surface">Dinner</h4>
+                  <p class="text-[11px] text-on-surface-variant">Target ~550 kcal window</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="font-headline font-bold text-sm text-on-surface" id="ledger-cal-dinner">0 kcal</span>
+                <button class="h-8 px-3 bg-primary text-on-primary font-bold text-xs rounded-lg active:scale-95 transition-all" onclick="openModal('', 'dinner')">
+                  + Log Dinner
+                </button>
+              </div>
+            </div>
+            <div class="p-3 flex flex-col gap-2" id="ledger-list-dinner"></div>
+          </div>
+
+        </div>
+
+        <!-- Right: AI Health Insights & Hydration (4 cols) -->
+        <div class="lg:col-span-4 flex flex-col gap-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[20px] text-primary">auto_awesome</span>
+              <h3 class="font-headline font-bold text-xl text-on-surface">Gemini Insights</h3>
+            </div>
+            <span class="text-xs text-on-surface-variant">Continuous Sync</span>
+          </div>
+
+          <!-- AI Nutrition Companion Banner Card -->
+          <div class="bg-gradient-to-r from-primary-container to-tertiary-container p-5 rounded-3xl text-on-primary shadow-md flex flex-col gap-2.5">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-[24px]">chat</span>
+                <div>
+                  <span class="text-[10px] uppercase font-bold text-on-tertiary-container tracking-wider block">AI Nutrition Companion</span>
+                  <h4 class="font-headline font-bold text-base text-on-primary">Ask NutriScan AI</h4>
+                </div>
+              </div>
+              <span class="text-[10px] bg-white/20 px-2 py-0.5 rounded-full font-bold">Text Chat</span>
+            </div>
+            <p class="text-xs text-on-tertiary-container leading-relaxed">
+              Ask questions about your daily protein, remaining calorie budget, or get custom dinner recommendations based on your ledger.
+            </p>
+            <button class="mt-1 w-full h-10 rounded-xl bg-surface-container-lowest text-primary font-headline font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-98 transition-all" onclick="navigateTo('chat')">
+              <span class="material-symbols-outlined text-[18px]">forum</span>
+              <span>Open Nutrition Chatbot</span>
+            </button>
+          </div>
+
+          <!-- Insight Cards -->
+          <div class="bg-surface-container-lowest p-4 rounded-2xl shadow-sm border border-outline-variant/30 flex items-start gap-3">
+            <div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary shrink-0 mt-0.5">
+              <span class="material-symbols-outlined text-[18px]">verified</span>
+            </div>
+            <div>
+              <h5 class="text-xs font-bold text-on-surface">High-Quality Protein Distribution</h5>
+              <p class="text-xs text-on-surface-variant mt-0.5">
+                Your lunch provided 34g of bioavailable protein with complete amino acids, optimal for muscle protein synthesis and satiety.
+              </p>
+            </div>
+          </div>
+
+          <div class="bg-surface-container-lowest p-4 rounded-2xl shadow-sm border border-outline-variant/30 flex items-start gap-3">
+            <div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-tertiary shrink-0 mt-0.5">
+              <span class="material-symbols-outlined text-[18px]">show_chart</span>
+            </div>
+            <div>
+              <h5 class="text-xs font-bold text-on-surface">Steady Glucose Curve</h5>
+              <p class="text-xs text-on-surface-variant mt-0.5">
+                Dietary fiber neutralized glycemic spike. Postprandial energy drop probability is under 12%.
+              </p>
+            </div>
+          </div>
+
+          <!-- Hydration Tracker Card -->
+          <div class="bg-surface-container-lowest p-4 rounded-2xl shadow-sm border border-outline-variant/30 flex flex-col gap-2.5">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-[20px] text-tertiary">water_drop</span>
+                <div>
+                  <span class="text-xs font-bold text-on-surface block">Hydration Ledger</span>
+                  <span class="text-[11px] text-on-surface-variant">Target: 2,500 ml</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="font-headline font-bold text-sm text-tertiary" id="hydrationVal">1,750 ml</span>
+                <button class="h-8 px-2.5 bg-surface-container rounded-lg text-primary font-bold text-xs flex items-center gap-1 active:scale-95 transition-all" onclick="addHydration(250)">
+                  <span class="material-symbols-outlined text-[14px]">add</span>250ml
+                </button>
+              </div>
+            </div>
+            <div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+              <div class="bg-tertiary h-full rounded-full transition-all duration-300" id="hydrationBar" style="width: 70%;"></div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ================= SCREEN 5: ANALYZE FOOD (Image 1) ================= -->
+    <section class="app-screen hidden max-w-7xl mx-auto px-4 flex flex-col gap-6" id="screen-analyze">
+      
+      <!-- Breadcrumb & Top Bar -->
+      <div class="flex items-center justify-between flex-wrap gap-2 text-xs">
+        <div class="flex items-center gap-2 text-on-surface-variant">
+          <button class="hover:underline" onclick="navigateTo('dashboard')">Home</button>
+          <span>/</span>
+          <span>Food Analyzer</span>
+          <span>/</span>
+          <span class="font-bold text-on-surface truncate max-w-xs" id="analyzeFoodTitle">Hyderabadi Chicken Biryani</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="bg-surface-container px-3 py-1 rounded-full font-bold text-primary text-[11px]">
+            ● Firestore Synced • doc_id #live
+          </span>
+        </div>
+      </div>
+
+      <!-- Main Analysis Grid (Image 1) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Left Column: Dish Overview & Scaler -->
+        <div class="lg:col-span-5 flex flex-col gap-4">
+          <div class="bg-surface-container-lowest rounded-3xl p-5 shadow-sm border border-outline-variant/30 flex flex-col gap-4">
+            
+            <!-- Dish Photo with Overlays -->
+            <div class="relative h-64 w-full rounded-2xl overflow-hidden shadow-sm">
+              <img id="analyzeFoodImg" alt="Dish photo" class="w-full h-full object-cover" src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=800&q=80"/>
+              <div class="absolute top-3 left-3 bg-surface-container-lowest/90 backdrop-blur-md px-2.5 py-1 rounded-full text-[11px] font-bold text-on-surface shadow-xs">
+                Verified Database #8492
+              </div>
+              <div class="absolute bottom-3 right-3 bg-surface-container-lowest/90 backdrop-blur-md px-2.5 py-1 rounded-full text-[11px] font-bold text-tertiary shadow-xs">
+                Confidence 98.4%
+              </div>
+            </div>
+
+            <div>
+              <div class="flex items-start justify-between gap-2">
+                <h2 class="font-headline font-extrabold text-2xl text-on-surface leading-tight" id="analyzeFoodTitleHead">Hyderabadi Chicken Biryani</h2>
+                <button class="w-9 h-9 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:text-error transition-all" onclick="toggleCurrentFavorite()" title="Bookmark Dish">
+                  <span class="material-symbols-outlined text-[20px]">bookmark</span>
+                </button>
+              </div>
+              <p class="text-xs text-on-surface-variant mt-1" id="analyzeFoodDesc">
+                Spiced basmati rice, tender chicken thigh, caramelized onions, hard-boiled egg garnish.
+              </p>
+            </div>
+
+            <!-- Portion Scaler -->
+            <div class="bg-surface-container-low p-3 rounded-2xl flex flex-col gap-2">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-bold text-on-surface">Portion Scaler</span>
+                <span class="text-on-surface-variant font-medium">Standard serving (350g)</span>
+              </div>
+              <div class="grid grid-cols-4 gap-1.5">
+                <button class="h-9 rounded-xl font-headline font-bold text-xs bg-surface-container text-on-surface" data-scale="0.5">0.5x</button>
+                <button class="h-9 rounded-xl font-headline font-bold text-xs bg-primary text-on-primary" data-scale="1.0">1.0x</button>
+                <button class="h-9 rounded-xl font-headline font-bold text-xs bg-surface-container text-on-surface" data-scale="1.5">1.5x</button>
+                <button class="h-9 rounded-xl font-headline font-bold text-xs bg-surface-container text-on-surface" data-scale="2.0">2.0x</button>
+              </div>
+            </div>
+
+            <!-- Caloric Energy Ring & NutriScore -->
+            <div class="grid grid-cols-2 gap-3">
+              <div class="p-3 bg-surface-container-low rounded-2xl text-center flex flex-col justify-center">
+                <span class="text-[10px] text-on-surface-variant uppercase font-bold">Caloric Energy</span>
+                <div class="flex items-baseline justify-center gap-1 my-1">
+                  <span class="font-headline font-extrabold text-2xl text-on-surface" id="analyzeFoodCalories">520</span>
+                  <span class="text-xs font-semibold text-on-surface-variant">kcal</span>
+                </div>
+                <span class="text-[10px] text-primary font-bold">24% of daily budget</span>
+              </div>
+
+              <div class="p-3 bg-surface-container-low rounded-2xl text-center flex flex-col justify-center">
+                <span class="text-[10px] text-on-surface-variant uppercase font-bold">NutriScore</span>
+                <div class="flex items-baseline justify-center gap-1 my-1">
+                  <span class="font-headline font-extrabold text-2xl text-primary" id="analyzeFoodNutriScore">78</span>
+                  <span class="text-xs text-on-surface-variant">/ 100</span>
+                </div>
+                <span class="text-[10px] text-tertiary font-bold" id="analyzeFoodNutriGrade">Good Choice</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Right Column: Macronutrient Profile, Micronutrients & AI Synthesis -->
+        <div class="lg:col-span-7 flex flex-col gap-4">
+          
+          <!-- Macronutrient Profile Card -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 shadow-sm border border-outline-variant/30 flex flex-col gap-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="font-headline font-bold text-lg text-on-surface">Macronutrient Profile</h3>
+                <p class="text-xs text-on-surface-variant">Caloric distribution per selected portion</p>
+              </div>
+              <span class="text-xs font-semibold text-on-surface-variant bg-surface-container px-2.5 py-1 rounded-full">
+                Energy Density: 1.48 kcal/g
+              </span>
+            </div>
+
+            <!-- Segmented Macro Bar -->
+            <div class="w-full bg-surface-container h-3 rounded-full overflow-hidden flex">
+              <div id="analyzeBarProtein" class="bg-tertiary h-full transition-all duration-300" style="width: 22%;"></div>
+              <div id="analyzeBarCarbs" class="bg-secondary-container h-full transition-all duration-300" style="width: 48%;"></div>
+              <div id="analyzeBarFat" class="bg-primary-container h-full transition-all duration-300" style="width: 30%;"></div>
+            </div>
+
+            <!-- 3 Macro Stat Columns -->
+            <div class="grid grid-cols-3 gap-3">
+              <div class="bg-surface-container-low p-3 rounded-2xl">
+                <div class="flex items-center gap-1.5 text-xs font-bold text-tertiary">
+                  <span class="w-2 h-2 rounded-full bg-tertiary"></span>Protein
+                </div>
+                <span class="font-headline font-extrabold text-xl text-on-surface block mt-1" id="analyzeFoodProtein">28 g</span>
+                <span class="text-[11px] text-on-surface-variant">112 kcal • Chicken & Egg</span>
+              </div>
+              <div class="bg-surface-container-low p-3 rounded-2xl">
+                <div class="flex items-center gap-1.5 text-xs font-bold text-secondary">
+                  <span class="w-2 h-2 rounded-full bg-secondary-container"></span>Carbs
+                </div>
+                <span class="font-headline font-extrabold text-xl text-on-surface block mt-1" id="analyzeFoodCarbs">62 g</span>
+                <span class="text-[11px] text-on-surface-variant">248 kcal • Basmati Rice</span>
+              </div>
+              <div class="bg-surface-container-low p-3 rounded-2xl">
+                <div class="flex items-center gap-1.5 text-xs font-bold text-primary">
+                  <span class="w-2 h-2 rounded-full bg-primary-container"></span>Total Fats
+                </div>
+                <span class="font-headline font-extrabold text-xl text-on-surface block mt-1" id="analyzeFoodFat">18 g</span>
+                <span class="text-[11px] text-on-surface-variant">162 kcal • Ghee & Marinade</span>
+              </div>
+            </div>
+
+            <!-- Logging & Favorite Action Row -->
+            <div class="flex items-center gap-2 pt-2 flex-wrap sm:flex-nowrap">
+              <select id="analyzeMealSlotSelect" class="h-11 px-3 bg-surface-container-low rounded-xl text-xs font-bold text-on-surface border border-outline-variant/30 focus:outline-none">
+                <option value="lunch" selected>Add to Lunch</option>
+                <option value="breakfast">Add to Breakfast</option>
+                <option value="snacks">Add to Snacks</option>
+                <option value="dinner">Add to Dinner</option>
+              </select>
+              <button class="flex-1 h-11 bg-primary text-on-primary font-headline font-bold text-xs rounded-xl shadow-md flex items-center justify-center gap-2 active:scale-95 transition-all" onclick="addAnalyzedToMeal()">
+                <span class="material-symbols-outlined text-[18px]">add_task</span>
+                <span>Confirm Add to Meal Ledger</span>
+              </button>
+              <button class="h-11 px-4 bg-surface-container hover:bg-surface-container-high rounded-xl text-xs font-bold text-on-surface flex items-center gap-1.5 transition-all" id="btnToggleFavorite" onclick="toggleCurrentFavorite()">
+                <span class="material-symbols-outlined text-[18px]">favorite_border</span>
+                <span>Save to Favorites</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Clinical Micronutrients Card -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 shadow-sm border border-outline-variant/30 flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+              <h3 class="font-headline font-bold text-base text-on-surface">Clinical Micronutrients</h3>
+              <span class="text-[11px] text-on-surface-variant">Daily Value (% DV) based on 2,000 kcal</span>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 text-xs">
+              <div class="p-2.5 bg-surface-container-low rounded-xl">
+                <span class="text-on-surface-variant block">Dietary Fiber (15% DV)</span>
+                <span class="font-bold text-on-surface text-sm" id="analyzeFoodFiber">4.2 g</span>
+              </div>
+              <div class="p-2.5 bg-surface-container-low rounded-xl">
+                <span class="text-on-surface-variant block">Total Sugars (Low)</span>
+                <span class="font-bold text-on-surface text-sm" id="analyzeFoodSugar">3.5 g</span>
+              </div>
+              <div class="p-2.5 bg-surface-container-low rounded-xl">
+                <span class="text-on-surface-variant block text-error font-medium">Sodium (34% DV)</span>
+                <span class="font-bold text-error text-sm" id="analyzeFoodSodium">780 mg</span>
+              </div>
+              <div class="p-2.5 bg-surface-container-low rounded-xl">
+                <span class="text-on-surface-variant block">Potassium (9% DV)</span>
+                <span class="font-bold text-on-surface text-sm">420 mg</span>
+              </div>
+              <div class="p-2.5 bg-surface-container-low rounded-xl">
+                <span class="text-on-surface-variant block">Iron (16% DV)</span>
+                <span class="font-bold text-on-surface text-sm">2.8 mg</span>
+              </div>
+              <div class="p-2.5 bg-surface-container-low rounded-xl">
+                <span class="text-on-surface-variant block">Calcium (4% DV)</span>
+                <span class="font-bold text-on-surface text-sm">45 mg</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI Nutritionist Synthesis Box -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 shadow-sm border border-outline-variant/30 flex flex-col gap-2">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[20px] text-primary">auto_awesome</span>
+              <h4 class="font-headline font-bold text-sm text-on-surface">Gemini Nutrition Diagnostic</h4>
+            </div>
+            <p class="text-xs text-on-surface-variant leading-relaxed">
+              <strong>Nutritional Assessment:</strong> Delivers an excellent 28g protein boost primarily from the chicken thigh and boiled egg, supporting lean muscle synthesis. The 62g carbohydrates are sourced from long-grain basmati rice with a moderate glycemic index.
+            </p>
+            <div class="p-2.5 bg-surface-container-low rounded-xl text-xs text-on-surface border-l-4 border-primary mt-1">
+              <strong>Metabolic Tip:</strong> Pairing this dish with 100g cucumber-mint raita or a high-fiber salad buffers post-prandial glycemic response and balances the 780mg sodium content.
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ================= COMPARATIVE METABOLIC LAB ================= -->
+      <div class="bg-surface-container-lowest rounded-3xl p-6 shadow-sm border border-outline-variant/30 flex flex-col gap-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-secondary">Comparative Metabolic Lab</span>
+            <h3 class="font-headline font-bold text-xl text-on-surface">Compare Current Dish vs Healthy Snack Alternative</h3>
+          </div>
+          <button class="h-8 px-3 rounded-lg bg-surface-container text-xs font-bold text-on-surface hover:bg-surface-container-high transition-all" onclick="navigateTo('compare')">
+            Full Lab View
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Dish 1: Current Active Meal -->
+          <div class="p-4 bg-surface-container-low rounded-2xl flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?auto=format&fit=crop&w=200&q=80" class="w-14 h-14 rounded-xl object-cover shadow-xs"/>
+              <div>
+                <span class="text-[10px] uppercase font-bold text-primary">Current Active Meal</span>
+                <h4 class="font-headline font-bold text-sm text-on-surface">Hyderabadi Chicken Biryani</h4>
+                <p class="text-xs text-on-surface-variant">1 Plate • 350 grams</p>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="font-headline font-bold text-base text-on-surface block">520 kcal</span>
+              <span class="text-xs font-bold text-primary">28g Protein</span>
+            </div>
+          </div>
+
+          <!-- Dish 2: Counterpart Snack -->
+          <div class="p-4 bg-surface-container-low rounded-2xl flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <img id="compAltImg" src="https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?auto=format&fit=crop&w=200&q=80" class="w-14 h-14 rounded-xl object-cover shadow-xs"/>
+              <div>
+                <span class="text-[10px] uppercase font-bold text-secondary">Nutritional Contrast</span>
+                <h4 class="font-headline font-bold text-sm text-on-surface" id="compAltName">Crisp Orchard Red Apple</h4>
+                <p class="text-xs text-on-surface-variant">1 Medium Apple • 182 grams</p>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="font-headline font-bold text-base text-tertiary block" id="compAltCal">95 kcal</span>
+              <span class="text-xs font-bold text-tertiary">4.4g Fiber</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-3 bg-surface-container-low rounded-xl flex items-center justify-between flex-wrap gap-2 text-xs">
+          <p class="text-on-surface-variant flex-1 min-w-[240px]" id="compSummaryText">
+            The <strong>Crisp Orchard Red Apple</strong> delivers identical dietary fiber with <strong>425 fewer calories</strong> and zero sodium.
+          </p>
+          <button class="h-9 px-4 bg-primary text-on-primary rounded-xl font-headline font-bold text-xs shadow-sm active:scale-95 transition-all" onclick="openModal('Crisp Orchard Red Apple', 'snacks')">
+            Add Apple as Evening Snack
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ================= SCREEN 6: MEAL TRACKER (Dedicated Ledger) ================= -->
+    <section class="app-screen hidden max-w-5xl mx-auto px-4 flex flex-col gap-6" id="screen-tracker">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="font-headline font-extrabold text-2xl sm:text-3xl text-on-surface">Meal Tracker & Ledger</h2>
+          <p class="text-sm text-on-surface-variant">Review, adjust portions, and record daily intake directly into Firestore.</p>
+        </div>
+        <button class="h-10 px-4 bg-primary text-on-primary rounded-xl font-bold text-xs shadow-sm" onclick="openModal('', 'breakfast')">
+          + Add New Food
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 gap-4">
+        <!-- Re-use ledger sections with dedicated styling -->
+        <div class="bg-surface-container-lowest p-5 rounded-3xl shadow-sm border border-outline-variant/30 flex flex-col gap-4">
+          <h3 class="font-headline font-bold text-lg text-on-surface flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary">checklist</span>
+            <span>Complete Meal Breakdown</span>
+          </h3>
+          <p class="text-xs text-on-surface-variant">
+            Use the (+) and (-) controls on any logged food to instantly scale the portion. Total calories, protein, carbs, and fats recalculate in real-time.
+          </p>
+          <button class="self-start h-9 px-4 bg-surface-container text-on-surface rounded-xl text-xs font-bold" onclick="navigateTo('dashboard')">
+            ← Return to Main Telemetry Dashboard
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SCREEN 7: TEXT-BASED AI COMPANION (Sections 18-26, 37) ================= -->
+    <section class="app-screen hidden max-w-4xl mx-auto px-4 flex flex-col gap-4" id="screen-chat">
+      
+      <!-- Chat Header -->
+      <div class="bg-surface-container-lowest p-5 rounded-3xl shadow-sm border border-outline-variant/30 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-primary flex items-center justify-center text-on-primary shadow-sm">
+            <span class="material-symbols-outlined text-[26px]">neurology</span>
+          </div>
+          <div>
+            <h2 class="font-headline font-extrabold text-xl text-on-surface">NutriScan AI</h2>
+            <p class="text-xs text-on-surface-variant">Your personal clinical nutrition companion</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button class="h-9 px-3 bg-surface-container hover:bg-surface-container-high rounded-xl text-xs font-bold text-on-surface transition-all" id="clearChatBtn">
+            Clear Chat
+          </button>
+        </div>
+      </div>
+
+      <!-- Suggestion Chips Bar -->
+      <div class="flex items-center gap-2 overflow-x-auto py-1 no-scrollbar text-xs">
+        <span class="text-on-surface-variant font-bold shrink-0">Ask AI:</span>
+        <button class="shrink-0 px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface font-semibold shadow-xs hover:bg-surface-container transition-colors" data-chat-prompt="What should I eat for more protein?">
+          🍗 More protein options?
+        </button>
+        <button class="shrink-0 px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface font-semibold shadow-xs hover:bg-surface-container transition-colors" data-chat-prompt="How many calories have I eaten today?">
+          🔥 How many calories today?
+        </button>
+        <button class="shrink-0 px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface font-semibold shadow-xs hover:bg-surface-container transition-colors" data-chat-prompt="What should I eat for dinner?">
+          🍲 Dinner suggestion
+        </button>
+        <button class="shrink-0 px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface font-semibold shadow-xs hover:bg-surface-container transition-colors" data-chat-prompt="Compare rice and roti for blood sugar">
+          ⚖️ Compare rice & roti
+        </button>
+        <button class="shrink-0 px-3 py-1.5 rounded-full bg-surface-container-lowest text-on-surface font-semibold shadow-xs hover:bg-surface-container transition-colors" data-chat-prompt="Analyze my meals today and give me feedback">
+          📊 Analyze my daily progress
+        </button>
+      </div>
+
+      <!-- Chat Conversation Area -->
+      <div class="bg-surface-container-low/70 rounded-3xl p-4 sm:p-6 min-h-[420px] max-h-[550px] overflow-y-auto flex flex-col border border-outline-variant/30" id="chatMessagesContainer">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Chat Input Box (Text Only, No Voice) -->
+      <div class="bg-surface-container-lowest p-2 rounded-2xl shadow-md border border-outline-variant/30 flex items-center gap-2">
+        <input class="flex-1 bg-transparent px-3 py-2.5 text-sm text-on-surface placeholder:text-on-surface-variant focus:outline-none" id="chatInput" placeholder="Ask NutriScan about your nutrition..." type="text"/>
+        <button class="h-10 px-4 bg-primary text-on-primary font-headline font-bold text-xs rounded-xl shadow-sm flex items-center gap-1 active:scale-95 transition-all" id="chatSendBtn" type="button">
+          <span>Send</span>
+          <span class="material-symbols-outlined text-[16px]">send</span>
+        </button>
+      </div>
+
+      <!-- Mandatory Medical Safety Footnote -->
+      <p class="text-center text-[11px] text-on-surface-variant">
+        <strong>NutriScan provides general nutrition information and is not a substitute for professional medical advice.</strong>
+      </p>
+    </section>
+
+    <!-- ================= SCREEN 8: FAVORITES (Section 15) ================= -->
+    <section class="app-screen hidden max-w-6xl mx-auto px-4 flex flex-col gap-6" id="screen-favorites">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="font-headline font-extrabold text-2xl sm:text-3xl text-on-surface">Your Favorites</h2>
+          <p class="text-sm text-on-surface-variant">Saved dishes and recipes stored in your personal Firestore account.</p>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="favoritesGrid">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- ================= SCREEN 9: FOOD COMPARISON LAB (Section 16) ================= -->
+    <section class="app-screen hidden max-w-4xl mx-auto px-4 flex flex-col gap-6" id="screen-compare">
+      <div class="bg-surface-container-lowest p-6 rounded-3xl shadow-sm border border-outline-variant/30 flex flex-col gap-4">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-wider text-secondary">Clinical Comparison</span>
+          <h2 class="font-headline font-extrabold text-2xl text-on-surface">Food Comparison Lab</h2>
+          <p class="text-xs text-on-surface-variant">Compare nutritional density, macros, and satiety between any two foods.</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1">Food A</label>
+            <select id="compareSelectA" class="w-full h-11 px-3 bg-surface-container-low rounded-xl text-sm font-semibold text-on-surface border border-outline-variant/30 focus:outline-none" onchange="renderComparisonScreen()">
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1">Food B</label>
+            <select id="compareSelectB" class="w-full h-11 px-3 bg-surface-container-low rounded-xl text-sm font-semibold text-on-surface border border-outline-variant/30 focus:outline-none" onchange="renderComparisonScreen()">
+            </select>
+          </div>
+        </div>
+
+        <!-- Metrics Comparison Table -->
+        <div class="mt-2 bg-surface-container-low rounded-2xl overflow-hidden border border-outline-variant/20">
+          <div class="py-2 px-3 bg-surface-container flex items-center justify-between text-xs font-bold text-on-surface-variant uppercase">
+            <span class="w-1/3">Nutrient Metric</span>
+            <span class="w-1/3 text-center">Food A</span>
+            <span class="w-1/3 text-center">Food B</span>
+          </div>
+          <div id="compRowCalories"></div>
+          <div id="compRowProtein"></div>
+          <div id="compRowCarbs"></div>
+          <div id="compRowFats"></div>
+          <div id="compRowFiber"></div>
+          <div id="compRowSodium"></div>
+          <div id="compRowNutriScore"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SCREEN 10: USER PROFILE & GOALS (Section 7, 27) ================= -->
+    <section class="app-screen hidden max-w-4xl mx-auto px-4 flex flex-col gap-6" id="screen-profile">
+      <div class="bg-surface-container-lowest p-6 sm:p-8 rounded-3xl shadow-sm border border-outline-variant/30 flex flex-col gap-6">
+        <div class="flex items-center justify-between border-b border-surface-container pb-4">
+          <div class="flex items-center gap-3">
+            <img alt="User avatar" class="w-14 h-14 rounded-full object-cover border-2 border-primary" src="https://lh3.googleusercontent.com/aida/AEtjO1XMkoptwEioQAtt38P51fI10LsyFpRQKlTGVxwpn6OQevTnOeZOTieEFK-B6WjH6ROhK9WtSBNuQ37FvJRxDym6UF0CIDjL9FRrEoo0s5I3QIo4c5XKhFKR5APL2eahOKr5BRn_8Ws1L0kOBfylqJ69kdzUYdxsz_sM3jotyvYhGtuE6dndIpMnt857rLU8YVHqv6k_3FD2W-1z1uJh4LcbAXZXA5VTBlnB0r3SqISDCCBTOtMC0MzMORAs"/>
+            <div>
+              <h2 class="font-headline font-bold text-xl text-on-surface dyn-user-name">Dr. Aarav Patel</h2>
+              <p class="text-xs text-on-surface-variant dyn-user-email">aarav.patel@healthmail.com</p>
+            </div>
+          </div>
+          <button class="h-10 px-4 bg-error-container text-on-error-container rounded-xl text-xs font-bold hover:opacity-90 transition-all btn-logout flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[16px]">logout</span>
+            <span>Sign Out</span>
+          </button>
+        </div>
+
+        <form id="profileForm" class="flex flex-col gap-5">
+          <h3 class="font-headline font-bold text-base text-on-surface">Personal Telemetry & Metrics</h3>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-xs">
+            <div>
+              <label class="block font-bold uppercase tracking-wider text-on-surface-variant mb-1">Full Name</label>
+              <input class="w-full h-11 px-3 bg-surface-container-low rounded-xl text-sm font-semibold text-on-surface" id="profName" value="Dr. Aarav Patel" type="text"/>
+            </div>
+            <div>
+              <label class="block font-bold uppercase tracking-wider text-on-surface-variant mb-1">Email</label>
+              <input class="w-full h-11 px-3 bg-surface-container-low rounded-xl text-sm text-on-surface" id="profEmail" value="aarav.patel@healthmail.com" type="email" readonly/>
+            </div>
+            <div>
+              <label class="block font-bold uppercase tracking-wider text-on-surface-variant mb-1">Age</label>
+              <input class="w-full h-11 px-3 bg-surface-container-low rounded-xl text-sm text-on-surface" id="profAge" value="32" type="number"/>
+            </div>
+            <div>
+              <label class="block font-bold uppercase tracking-wider text-on-surface-variant mb-1">Gender</label>
+              <select class="w-full h-11 px-3 bg-surface-container-low rounded-xl text-sm text-on-surface" id="profGender">
+                <option value="Male" selected>Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-bold uppercase tracking-wider text-on-surface-variant mb-1">Height (cm)</label>
+              <input class="w-full h-11 px-3 bg-surface-container-low rounded-xl text-sm text-on-surface" id="profHeight" value="178" type="number"/>
+            </div>
+            <div>
+              <label class="block font-bold uppercase tracking-wider text-on-surface-variant mb-1">Weight (kg)</label>
+              <input class="w-full h-11 px-3 bg-surface-container-low rounded-xl text-sm text-on-surface" id="profWeight" value="74" type="number" step="0.1"/>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs pt-2">
+            <div>
+              <label class="block font-bold uppercase tracking-wider text-on-surface-variant mb-1">Activity Level</label>
+              <select class="w-full h-11 px-3 bg-surface-container-low rounded-xl text-sm text-on-surface" id="profActivity">
+                <option value="Sedentary">Sedentary (desk job, minimal movement)</option>
+                <option value="Lightly Active">Lightly Active (1-3 days exercise/week)</option>
+                <option value="Moderately Active" selected>Moderately Active (3-5 days workout/week)</option>
+                <option value="Very Active">Very Active (6-7 days heavy training)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-bold uppercase tracking-wider text-on-surface-variant mb-1">Nutrition Goal</label>
+              <select class="w-full h-11 px-3 bg-surface-container-low rounded-xl text-sm text-on-surface" id="profGoal">
+                <option value="Maintain Weight & Vitality" selected>Maintain Weight & Vitality</option>
+                <option value="Lose Weight (Fat Loss)">Lose Weight (Caloric Deficit)</option>
+                <option value="Gain Lean Muscle">Gain Lean Muscle (Hypertrophy)</option>
+                <option value="Improve Metabolic Health">Improve Metabolic Health & Insulin Sensitivity</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between pt-2">
+            <h3 class="font-headline font-bold text-base text-on-surface">Daily Dietary Targets</h3>
+            <button class="h-8 px-3 bg-surface-container text-primary rounded-xl text-xs font-bold" id="btnCalculateTargets" type="button">
+              ✨ Calculate Estimated Daily Target
+            </button>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 text-xs">
+            <div class="bg-surface-container-low p-3 rounded-xl text-center">
+              <span class="text-on-surface-variant block mb-1">Calories</span>
+              <input class="w-full text-center bg-transparent font-headline font-bold text-lg text-on-surface focus:outline-none" id="profCalories" value="2200" type="number"/>
+              <span class="text-[10px] text-on-surface-variant">kcal / day</span>
+            </div>
+            <div class="bg-surface-container-low p-3 rounded-xl text-center">
+              <span class="text-on-surface-variant block mb-1">Protein</span>
+              <input class="w-full text-center bg-transparent font-headline font-bold text-lg text-primary focus:outline-none" id="profProtein" value="110" type="number"/>
+              <span class="text-[10px] text-on-surface-variant">grams / day</span>
+            </div>
+            <div class="bg-surface-container-low p-3 rounded-xl text-center">
+              <span class="text-on-surface-variant block mb-1">Carbs</span>
+              <input class="w-full text-center bg-transparent font-headline font-bold text-lg text-secondary focus:outline-none" id="profCarbs" value="280" type="number"/>
+              <span class="text-[10px] text-on-surface-variant">grams / day</span>
+            </div>
+            <div class="bg-surface-container-low p-3 rounded-xl text-center">
+              <span class="text-on-surface-variant block mb-1">Fats</span>
+              <input class="w-full text-center bg-transparent font-headline font-bold text-lg text-on-surface focus:outline-none" id="profFat" value="70" type="number"/>
+              <span class="text-[10px] text-on-surface-variant">grams / day</span>
+            </div>
+            <div class="bg-surface-container-low p-3 rounded-xl text-center col-span-2 sm:col-span-1">
+              <span class="text-on-surface-variant block mb-1">Fiber</span>
+              <input class="w-full text-center bg-transparent font-headline font-bold text-lg text-tertiary focus:outline-none" id="profFiber" value="35" type="number"/>
+              <span class="text-[10px] text-on-surface-variant">grams / day</span>
+            </div>
+          </div>
+
+          <button class="h-12 bg-primary text-on-primary font-headline font-bold text-sm rounded-xl shadow-md active:scale-98 transition-all mt-3" type="submit">
+            Save Profile & Nutritional Targets to Firestore
+          </button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= ADD FOOD MODAL ================= -->
+  <div class="fixed inset-0 z-50 bg-inverse-surface/40 backdrop-blur-sm hidden items-end sm:items-center justify-center p-0 sm:p-4 transition-opacity" id="addFoodModal">
+    <div class="w-full max-w-md bg-surface-container-lowest rounded-t-3xl sm:rounded-3xl shadow-2xl p-6 flex flex-col gap-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-primary">
+            <span class="material-symbols-outlined text-[22px]">restaurant</span>
+          </div>
+          <div>
+            <h3 class="font-headline font-bold text-lg text-on-surface" id="modalMealTitle">Add Food to Ledger</h3>
+            <p class="text-xs text-on-surface-variant">Log to your daily nutrition record</p>
+          </div>
+        </div>
+        <button class="w-9 h-9 flex items-center justify-center rounded-xl text-on-surface-variant hover:bg-surface-container" onclick="closeModal()">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <div class="flex flex-col gap-3">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1">Meal Window</label>
+          <select id="modalMealSlot" class="w-full h-11 px-3 bg-surface-container-low rounded-xl text-sm font-semibold text-on-surface border border-outline-variant/30 focus:outline-none">
+            <option value="breakfast">Breakfast</option>
+            <option value="lunch" selected>Lunch</option>
+            <option value="snacks">Snacks</option>
+            <option value="dinner">Dinner</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1">Dish Name</label>
+          <input class="w-full h-11 px-3 bg-surface-container-low rounded-xl text-sm text-on-surface focus:outline-none" id="modalFoodName" placeholder="e.g. Steamed Paneer Bowl, Apple..." type="text"/>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1">Serving Size</label>
+            <input class="w-full h-11 px-3 bg-surface-container-low rounded-xl text-sm text-on-surface focus:outline-none" id="modalServingSize" value="1 serving (240g)" type="text"/>
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-1">Calories (kcal)</label>
+            <input class="w-full h-11 px-3 bg-surface-container-low rounded-xl text-sm text-on-surface focus:outline-none" id="modalCalories" value="320" type="number"/>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2">
+          <div class="bg-surface-container-low p-2 rounded-xl text-center">
+            <span class="text-[10px] text-on-surface-variant uppercase font-bold block">Protein (g)</span>
+            <input class="w-full text-center bg-transparent font-headline font-bold text-base text-on-surface focus:outline-none" id="modalProtein" value="22" type="number"/>
+          </div>
+          <div class="bg-surface-container-low p-2 rounded-xl text-center">
+            <span class="text-[10px] text-on-surface-variant uppercase font-bold block">Carbs (g)</span>
+            <input class="w-full text-center bg-transparent font-headline font-bold text-base text-on-surface focus:outline-none" id="modalCarbs" value="34" type="number"/>
+          </div>
+          <div class="bg-surface-container-low p-2 rounded-xl text-center">
+            <span class="text-[10px] text-on-surface-variant uppercase font-bold block">Fats (g)</span>
+            <input class="w-full text-center bg-transparent font-headline font-bold text-base text-on-surface focus:outline-none" id="modalFats" value="11" type="number"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 pt-2">
+        <button class="flex-1 h-11 rounded-xl bg-surface-container text-on-surface font-headline font-bold text-xs active:scale-95 transition-all" onclick="closeModal()" type="button">Cancel</button>
+        <button class="flex-1 h-11 rounded-xl bg-primary text-on-primary font-headline font-bold text-xs shadow-md active:scale-95 transition-all" id="modalSaveFoodBtn" type="button">Save to Ledger</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= TOAST NOTIFICATION ================= -->
+  <div class="fixed bottom-24 md:bottom-8 left-4 right-4 max-w-sm mx-auto z-50 bg-inverse-surface text-inverse-on-surface px-4 py-3 rounded-2xl shadow-2xl flex items-center justify-between opacity-0 pointer-events-none transition-all duration-300 transform translate-y-4" id="toastNotification">
+    <div class="flex items-center gap-2.5">
+      <span class="material-symbols-outlined text-[20px] text-tertiary-fixed">check_circle</span>
+      <span class="text-xs font-medium" id="toastMessage">Food recorded successfully!</span>
+    </div>
+    <button class="text-inverse-on-surface/70 hover:text-inverse-on-surface" onclick="hideToast()">
+      <span class="material-symbols-outlined text-[18px]">close</span>
+    </button>
+  </div>
+
+  <!-- ================= MOBILE BOTTOM TAB NAVIGATION (Image 13) ================= -->
+  <nav class="md:hidden fixed bottom-0 inset-x-0 z-40 bg-surface/95 backdrop-blur-xl border-t border-outline-variant/30 px-2 py-1 shadow-lg">
+    <div class="flex justify-between items-center h-14 max-w-lg mx-auto">
+      <button class="flex flex-col items-center justify-center flex-1 text-primary text-xs font-semibold" data-bottom-nav="dashboard" onclick="navigateTo('dashboard')">
+        <span class="material-symbols-outlined text-[22px]">home</span>
+        <span class="text-[10px] mt-0.5">Dashboard</span>
+      </button>
+
+      <button class="relative -top-3 flex items-center justify-center w-12 h-12 rounded-full bg-primary text-on-primary shadow-lg shadow-primary/30 active:scale-95 transition-all" onclick="navigateTo('analyze')">
+        <span class="material-symbols-outlined text-[24px]">qr_code_scanner</span>
+      </button>
+
+      <button class="flex flex-col items-center justify-center flex-1 text-on-surface-variant text-xs font-semibold" data-bottom-nav="tracker" onclick="navigateTo('tracker')">
+        <span class="material-symbols-outlined text-[22px]">checklist</span>
+        <span class="text-[10px] mt-0.5">Ledger</span>
+      </button>
+
+      <button class="flex flex-col items-center justify-center flex-1 text-on-surface-variant text-xs font-semibold" data-bottom-nav="chat" onclick="navigateTo('chat')">
+        <span class="material-symbols-outlined text-[22px]">neurology</span>
+        <span class="text-[10px] mt-0.5">Insights</span>
+      </button>
+
+      <button class="flex flex-col items-center justify-center flex-1 text-on-surface-variant text-xs font-semibold" data-bottom-nav="profile" onclick="navigateTo('profile')">
+        <span class="material-symbols-outlined text-[22px]">person</span>
+        <span class="text-[10px] mt-0.5">Profile</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ES6 Vanilla JavaScript Application Entry Point -->
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+{
+  "name": "NutriScan Food & Nutrition Analyzer",
+  "description": "Clinical-grade nutritional analytics, real-time macro calculation, and AI nutrition companion.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
